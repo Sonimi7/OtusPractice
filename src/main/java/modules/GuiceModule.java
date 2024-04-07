@@ -35,4 +35,9 @@ public class GuiceModule extends AbstractModule {
     public CourseDetailPage getCourseDetailPage() {
         return new CourseDetailPage(driver);
     }
+//    @Provides
+//    @Singleton
+//    public BlockWithItemsComponents blockWithItemsComponents() {
+//        return new BlockWithItemsComponents(driver);
+//    }
 }

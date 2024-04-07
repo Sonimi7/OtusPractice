@@ -24,5 +24,13 @@ public class CourseTest {
                 .open()
                 .clickCourseByName("Java QA Engineer. Basic");
 
+        courseDetailPage
+                .assertTitleCardCourse("Java QA Engineer. Basic");
+    }
+
+    @Test
+    public void assertDateCourses() {
+        coursesPage.open()
+                .searchCoursesEarlierAndLater();
     }
 }

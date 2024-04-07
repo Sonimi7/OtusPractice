@@ -20,4 +20,8 @@ public class BlockWithItemsComponents extends AnyComponentsAbs<BlockWithItemsCom
         return new CoursesPage(driver);
     }
 
+
+
+
+
 }

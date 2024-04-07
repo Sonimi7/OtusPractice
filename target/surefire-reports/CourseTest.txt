@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: CourseTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 38.53 s <<< FAILURE! -- in CourseTest
+CourseTest.assertDateCourses -- Time elapsed: 38.48 s <<< ERROR!
+java.util.NoSuchElementException: No value present
+	at java.base/java.util.Optional.get(Optional.java:143)
+	at pages.CoursesPage.searchCoursesEarlierAndLater(CoursesPage.java:82)
+	at CourseTest.assertDateCourses(CourseTest.java:34)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+

@@ -11,6 +11,7 @@ public class ChromeSettings implements IDriverSettings<ChromeOptions> {
         chromeOptions.addArguments("--no-first-run");
         chromeOptions.addArguments("--homepage=about:blank");
         chromeOptions.addArguments("--ignore-certificate-errors");
+        chromeOptions.addArguments("start-maximized");
 
         return chromeOptions;
     }

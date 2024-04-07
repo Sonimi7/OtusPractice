@@ -15,7 +15,7 @@ public abstract class AnyComponentsAbs<T> extends CommonActions<T> {
 
     protected Actions actions;
 
-    public AnyComponentAbs(WebDriver driver) {
+    public AnyComponentsAbs(WebDriver driver) {
         super(driver);
         actions = new Actions(driver);
     }

@@ -8,6 +8,8 @@ public class MainPage extends AnyPageAbs<MainPage>{
         super(driver);
     }
 
- //   private Injector injector = Guice.createInjector(new GuiceModule());
+//    public MainPage assertNotVisibleSubMenu() {
+//
+//    }
 
 }
