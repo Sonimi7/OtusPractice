@@ -3,25 +3,31 @@ package components;
 import annotations.Component;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import pages.CoursesPage;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 
 @Component("xpath://span[text()='%s']")
 public class BlockWithItemsComponents extends AnyComponentsAbs<BlockWithItemsComponents> {
+
+    private By subMenuElementLocator = By.xpath("//nav/div[3]");
+    private By menuHover = By.xpath("//nav/div[2]");
 
     public BlockWithItemsComponents(WebDriver driver) {
         super(driver);
     }
 
-    /** Клик на обучение в хедере
-     */
-    public CoursesPage clickItem(String name) {
-        getComponentEntity().findElement(By.xpath(String.format("//span[text()='%s']", name))).click();
+    public BlockWithItemsComponents moveToElement1() {
+        waiters.waitForElementVisible(driver.findElement(subMenuElementLocator));
+        WebElement subMenuElement = driver.findElement(subMenuElementLocator);
 
-        return new CoursesPage(driver);
+        String classAttributeValue = subMenuElement.getAttribute("class");
+
+        Actions actions = new Actions(driver);
+        WebElement menuDrop = driver.findElement(menuHover);
+        actions.moveToElement(menuDrop).perform();
+
+        waiters.waitForCondition(driver -> !subMenuElement.getAttribute("class").equals(classAttributeValue));
+        return this;
     }
-
-
-
-
 
 }

@@ -3,6 +3,7 @@ package modules;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import components.BlockWithItemsComponents;
 import factory.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import pages.CourseDetailPage;
@@ -35,9 +36,9 @@ public class GuiceModule extends AbstractModule {
     public CourseDetailPage getCourseDetailPage() {
         return new CourseDetailPage(driver);
     }
-//    @Provides
-//    @Singleton
-//    public BlockWithItemsComponents blockWithItemsComponents() {
-//        return new BlockWithItemsComponents(driver);
-//    }
+    @Provides
+    @Singleton
+    public BlockWithItemsComponents blockWithItemsComponents() {
+        return new BlockWithItemsComponents(driver);
+    }
 }

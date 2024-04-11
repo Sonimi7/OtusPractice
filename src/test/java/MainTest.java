@@ -21,9 +21,8 @@ public class MainTest {
     @Test
     public void selectRightCategoryCourse() {
         mainPage.open();
-
-
-
-        //blockWithItemsComponents.clickItem("Обучение");
+        blockWithItemsComponents.moveToElement1();
+        mainPage.clickRandomCategoryCourses();
+        coursesPage.checkStateCheckboxCategory(mainPage.expectedTileCategory);
     }
 }

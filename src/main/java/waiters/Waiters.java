@@ -11,15 +11,16 @@ import java.time.Duration;
 
 public class Waiters implements IWaiters{
 
-    private WebDriver driver = null;
-   // WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriver webDriver;
+    private WebDriverWait webDriverWait;
     public Waiters(WebDriver driver) {
-        this.driver = driver;
+        this.webDriver = driver;
+        this.webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
     }
 
     @Override
     public boolean waitForCondition(ExpectedCondition condition) {
-        WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
         try {
             webDriverWait.until(condition);
             return true;
@@ -40,11 +41,4 @@ public class Waiters implements IWaiters{
         return waitForCondition(ExpectedConditions.invisibilityOf(element));
     }
 
-//    public boolean waitForNotVisibleSubMenu(WebElement element, String name) {
-//        WebElement subMenuElement = driver.findElement(By.xpath(String.format("//span[text()='%s']", name)));
-//        String classAttributeValue = subMenuElement.getAttribute("class");
-//
-//        webDriverWait.until(driver1 -> !driver1.findElement((By) subMenuElement).getAttribute("class").equals(classAttributeValue));
-//        return true;
-//    }
 }
