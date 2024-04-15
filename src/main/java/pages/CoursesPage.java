@@ -6,7 +6,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,7 +16,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @UrlPrefix("/catalog/courses")
@@ -63,35 +61,41 @@ public class CoursesPage extends AnyPageAbs<CoursesPage>{
         return Jsoup.connect(url).get();
     }
 
-    public CoursesPage searchCoursesEarlierAndLater() {
+    public List<WebElement> searchCoursesEarlierAndLater() {
         List<WebElement> list = driver.findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
 
         List<LocalDate> dates = list.stream()
                 .map((WebElement element) ->
                         { waiters.waitForCondition(ExpectedConditions.stalenessOf(element));
-                            try { return LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
+                            int index = list.indexOf(element);
+                            List<WebElement> refreshedElements = driver
+                                    .findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
+                            list.set(index, refreshedElements.get(index));
+                            return LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
                                     DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru")));
-                            } catch (StaleElementReferenceException e) {
-                                int index = list.indexOf(element);
-                                List<WebElement> refreshedElements = driver
-                                        .findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
-                                list.set(index, refreshedElements.get(index));
-                                return null;
-                            }
                         })
-                .filter(Objects::nonNull)
                 .toList();
 
         LocalDate earlyDate = dates.stream()
                 .reduce((LocalDate buff, LocalDate item) -> buff.isBefore(item) ? buff: item).get();
 
-        List<WebElement> results = list.stream()
+        LocalDate laterDate = dates.stream()
+                .reduce((LocalDate buff, LocalDate item) -> buff.isAfter(item) ? buff: item).get();
+
+        List<WebElement> resultsEarlyDate = list.stream()
                 .filter((WebElement element) ->
                         LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
                         DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru"))).isEqual(earlyDate))
                 .toList();
 
-        return (CoursesPage) results;
+        List<WebElement> resultsLaterDate = list.stream()
+                .filter((WebElement element) ->
+                        LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
+                                DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru"))).isEqual(laterDate))
+                .toList();
+
+        return resultsEarlyDate;
+
     }
 
 }

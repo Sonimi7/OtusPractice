@@ -22,7 +22,7 @@ public class MainTest {
     public void selectRightCategoryCourse() {
         mainPage.open();
         blockWithItemsComponents.moveToElement1();
-        mainPage.clickRandomCategoryCourses();
-        coursesPage.checkStateCheckboxCategory(mainPage.expectedTileCategory);
+        blockWithItemsComponents.clickRandomCategoryCourses();
+        coursesPage.checkStateCheckboxCategory(blockWithItemsComponents.expectedTileCategory);
     }
 }
