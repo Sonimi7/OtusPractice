@@ -16,86 +16,95 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.function.BinaryOperator;
+
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 @UrlPrefix("/catalog/courses")
-public class CoursesPage extends AnyPageAbs<CoursesPage>{
+public class CoursesPage extends AnyPageAbs<CoursesPage> {
 
-    @FindBy(xpath = "//section//div[not(@style)]/a[contains(@href, '/lessons/')][.//h6]")
-    private List<WebElement> cardsCourses;
-    @Inject
-    public CourseDetailPage courseDetailPage;
+  @Inject
+  public CourseDetailPage courseDetailPage;
+  @FindBy(xpath = "//section//div[not(@style)]/a[contains(@href, '/lessons/')][.//h6]")
+  private List<WebElement> cardsCourses;
 
-    public CoursesPage(WebDriver driver) {
-        super(driver);
+  public CoursesPage(WebDriver driver) {
+    super(driver);
+  }
+
+
+  public CourseDetailPage clickCourseByName(String courseName) {
+    driver.findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')][.//h6]"))
+        .stream()
+        .filter(el -> el.getText().contains(courseName))
+        .findFirst().get().click();
+
+    return courseDetailPage;
+  }
+
+  public void checkStateCheckboxCategory(String expectedTileCategory) {
+    String valueCheckbox = driver.findElement(By.xpath(String.format("//label[contains(text(), '%s')]/parent::div", expectedTileCategory.replaceAll("\\s+\\(\\d+\\)", ""))))
+        .getAttribute("value");
+    Assertions.assertEquals("true", valueCheckbox);
+  }
+
+  private List<WebElement> searchCoursesEarlierAndLater(boolean isEarly) {
+    List<WebElement> list = driver.findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
+
+    list.stream()
+        .forEach((WebElement element) ->
+        {
+          waiters.waitForCondition(ExpectedConditions.visibilityOf(element));
+          int index = list.indexOf(element);
+          List<WebElement> refreshedElements = driver
+              .findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
+          list.set(index, refreshedElements.get(index));
+        });
+
+    List<LocalDate> dates = list.stream()
+        .map((WebElement element) ->
+            LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
+                DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru")))
+        )
+        .toList();
+
+
+    BinaryOperator<LocalDate> reduceOperator = null;
+    if (isEarly) {
+      reduceOperator = (LocalDate buff, LocalDate item) -> buff.isBefore(item) ? buff : item;
+    } else {
+      reduceOperator = (LocalDate buff, LocalDate item) -> buff.isAfter(item) ? buff : item;
     }
 
+    LocalDate earlyDate = dates.stream()
+        .reduce(reduceOperator).get();
 
-    public CourseDetailPage clickCourseByName(String courseName) {
-        driver.findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')][.//h6]"))
-                .stream()
-                .filter(el -> el.getText().contains(courseName))
-                .findFirst().get().click();
 
-        return courseDetailPage;
+    List<WebElement> resultsEarlyDate = list.stream()
+        .filter((WebElement element) ->
+            LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
+                DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru"))).isEqual(earlyDate))
+        .toList();
+
+    return resultsEarlyDate;
+
+  }
+
+  public void assertTitleCardCourse(boolean isEarly) throws IOException {
+    for (WebElement element : searchCoursesEarlierAndLater(isEarly)) {
+      WebElement cardCourse = element.findElement(By.xpath("./../../..//h6"));
+
+      String expectedHeader = cardCourse.getText();
+
+      String path = cardCourse.findElement(By.xpath("./..")).getAttribute("href");
+      if (path.startsWith("/")) {
+        path = getBaseUrl() + path;
+      }
+      Document doc = Jsoup.connect(path).get();
+      String actualTitle = doc.select("h1").get(0).text();
+      assertThat(actualTitle).as("").isEqualTo(expectedHeader);
     }
+  }
 
-    public void checkStateCheckboxCategory(String expectedTileCategory) {
-        String valueCheckbox = driver.findElement(By.xpath(String.format("//label[contains(text(), '%s')]/parent::div", expectedTileCategory.replaceAll("\\s+\\(\\d+\\)", ""))))
-                .getAttribute("value");
-        Assertions.assertTrue(valueCheckbox.equals("true"));
-    }
-
-//    public List<WebElement> getListCardCourses() {
-//        List<WebElement> elementList = (List<WebElement>) cardsCourses.stream();
-//        return elementList;
-//    }
-//    public String getTitleCourseByIndex(int index) {
-//        return cardsCourses.get(--index).findElement(By.xpath(".//h6")).getText();
-//    }
-    private Document getDomPage(int index) throws IOException {
-        List<String> urls = cardsCourses.stream()
-                .map(element -> element.getAttribute("href"))
-                .collect(Collectors.toList());
-        String url = urls.get(--index);
-        return Jsoup.connect(url).get();
-    }
-
-    public List<WebElement> searchCoursesEarlierAndLater() {
-        List<WebElement> list = driver.findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
-
-        List<LocalDate> dates = list.stream()
-                .map((WebElement element) ->
-                        { waiters.waitForCondition(ExpectedConditions.stalenessOf(element));
-                            int index = list.indexOf(element);
-                            List<WebElement> refreshedElements = driver
-                                    .findElements(By.xpath("//section//div[not(@style)]/a[contains(@href, '/lessons/')]/h6/following-sibling::div/div/div"));
-                            list.set(index, refreshedElements.get(index));
-                            return LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
-                                    DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru")));
-                        })
-                .toList();
-
-        LocalDate earlyDate = dates.stream()
-                .reduce((LocalDate buff, LocalDate item) -> buff.isBefore(item) ? buff: item).get();
-
-        LocalDate laterDate = dates.stream()
-                .reduce((LocalDate buff, LocalDate item) -> buff.isAfter(item) ? buff: item).get();
-
-        List<WebElement> resultsEarlyDate = list.stream()
-                .filter((WebElement element) ->
-                        LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
-                        DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru"))).isEqual(earlyDate))
-                .toList();
-
-        List<WebElement> resultsLaterDate = list.stream()
-                .filter((WebElement element) ->
-                        LocalDate.parse(element.getText().replaceAll("\\s*·.*$", "").trim(),
-                                DateTimeFormatter.ofPattern("dd MMMM, yyyy", Locale.forLanguageTag("ru"))).isEqual(laterDate))
-                .toList();
-
-        return resultsEarlyDate;
-
-    }
 
 }

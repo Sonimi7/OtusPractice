@@ -1,0 +1,21 @@
+#Fri Apr 26 16:05:54 MSK 2024
+/Users/user/IdeaProjects/OtusPractice/src/main/java/annotations/Component.java=1713811540499
+/Users/user/IdeaProjects/OtusPractice/src/main/java/annotations/Driver.java=1713811540471
+/Users/user/IdeaProjects/OtusPractice/src/main/java/annotations/PageValidation.java=1713811540430
+/Users/user/IdeaProjects/OtusPractice/src/main/java/annotations/UrlPrefix.java=1713811540495
+/Users/user/IdeaProjects/OtusPractice/src/main/java/components/AnyComponentsAbs.java=1713812704728
+/Users/user/IdeaProjects/OtusPractice/src/main/java/components/BlockWithItemsComponents.java=1713812086195
+/Users/user/IdeaProjects/OtusPractice/src/main/java/exceptions/WebDriverNotSupportedException.java=1713811017296
+/Users/user/IdeaProjects/OtusPractice/src/main/java/extensions/UIExtensions.java=1713811540479
+/Users/user/IdeaProjects/OtusPractice/src/main/java/factory/IDriverFactory.java=1713811540492
+/Users/user/IdeaProjects/OtusPractice/src/main/java/factory/impl/ChromeSettings.java=1713811670201
+/Users/user/IdeaProjects/OtusPractice/src/main/java/factory/impl/IDriverSettings.java=1713811670158
+/Users/user/IdeaProjects/OtusPractice/src/main/java/listeners/ActionListener.java=1714133544934
+/Users/user/IdeaProjects/OtusPractice/src/main/java/modules/GuiceModule.java=1713812086217
+/Users/user/IdeaProjects/OtusPractice/src/main/java/pages/CourseDetailPage.java=1713811670206
+/Users/user/IdeaProjects/OtusPractice/src/main/java/pages/CoursesPage.java=1714133544986
+/Users/user/IdeaProjects/OtusPractice/src/main/java/pages/MainPage.java=1713811670191
+/Users/user/IdeaProjects/OtusPractice/src/main/java/waiters/IWaiters.java=1713811540489
+/Users/user/IdeaProjects/OtusPractice/src/main/java/waiters/Waiters.java=1713812567564
+/Users/user/IdeaProjects/OtusPractice/src/test/java/MainTest.java=1713813060649
+configuration*?=F4A22C0BBCF1DA55AD3476DE4930F566DF452B6E

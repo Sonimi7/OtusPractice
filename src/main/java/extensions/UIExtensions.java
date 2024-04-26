@@ -10,26 +10,26 @@ import org.openqa.selenium.WebDriver;
 
 public class UIExtensions implements BeforeEachCallback, AfterEachCallback {
 
-    private Injector injector;
+  private Injector injector;
 
-    @Override
-    public void beforeEach(ExtensionContext extensionContext) {
-        injector = Guice.createInjector(new GuiceModule());
+  @Override
+  public void beforeEach(ExtensionContext extensionContext) {
+    injector = Guice.createInjector(new GuiceModule());
 
-        extensionContext.getTestInstance()
-                .ifPresent(instance -> {
-                    injector.injectMembers(instance);
-                });
-    }
+    extensionContext.getTestInstance()
+        .ifPresent(instance -> {
+          injector.injectMembers(instance);
+        });
+  }
 
-    @Override
-    public void afterEach(ExtensionContext extensionContext) {
-        extensionContext.getTestInstance()
-                .ifPresent(instance -> {
-                    WebDriver driver = injector.getProvider(WebDriver.class).get();
-                    if (driver != null) {
-                        driver.quit();
-                    }
-                });
-    }
+  @Override
+  public void afterEach(ExtensionContext extensionContext) {
+    extensionContext.getTestInstance()
+        .ifPresent(instance -> {
+          WebDriver driver = injector.getProvider(WebDriver.class).get();
+          if (driver != null) {
+            driver.quit();
+          }
+        });
+  }
 }

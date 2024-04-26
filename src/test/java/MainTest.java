@@ -9,20 +9,20 @@ import pages.MainPage;
 @ExtendWith(UIExtensions.class)
 public class MainTest {
 
-    @Inject
-    private MainPage mainPage;
+  @Inject
+  private MainPage mainPage;
 
-    @Inject
-    private CoursesPage coursesPage;
+  @Inject
+  private CoursesPage coursesPage;
 
-    @Inject
-    private BlockWithItemsComponents blockWithItemsComponents;
+  @Inject
+  private BlockWithItemsComponents blockWithItemsComponents;
 
-    @Test
-    public void selectRightCategoryCourse() {
-        mainPage.open();
-        blockWithItemsComponents.moveToElement1();
-        blockWithItemsComponents.clickRandomCategoryCourses();
-        coursesPage.checkStateCheckboxCategory(blockWithItemsComponents.expectedTileCategory);
-    }
+  @Test
+  public void selectRightCategoryCourse() {
+    mainPage.open();
+    blockWithItemsComponents.moveToElement1();
+    blockWithItemsComponents.clickRandomCategoryCourses();
+    coursesPage.checkStateCheckboxCategory(blockWithItemsComponents.expectedTileCategory);
+  }
 }

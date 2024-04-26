@@ -12,33 +12,34 @@ import pages.MainPage;
 
 public class GuiceModule extends AbstractModule {
 
-    private final WebDriver driver = new DriverFactory().create();
+  private final WebDriver driver = new DriverFactory().create();
 
-    @Provides
-    public WebDriver getDriver() {
-        return driver;
-    }
+  @Provides
+  public WebDriver getDriver() {
+    return driver;
+  }
 
-    @Provides
-    @Singleton
-    public MainPage getMainPage() {
-        return new MainPage(driver);
-    }
+  @Provides
+  @Singleton
+  public MainPage getMainPage() {
+    return new MainPage(driver);
+  }
 
-    @Provides
-    @Singleton
-    public CoursesPage getCoursesPage() {
-        return new CoursesPage(driver);
-    }
+  @Provides
+  @Singleton
+  public CoursesPage getCoursesPage() {
+    return new CoursesPage(driver);
+  }
 
-    @Provides
-    @Singleton
-    public CourseDetailPage getCourseDetailPage() {
-        return new CourseDetailPage(driver);
-    }
-    @Provides
-    @Singleton
-    public BlockWithItemsComponents blockWithItemsComponents() {
-        return new BlockWithItemsComponents(driver);
-    }
+  @Provides
+  @Singleton
+  public CourseDetailPage getCourseDetailPage() {
+    return new CourseDetailPage(driver);
+  }
+
+  @Provides
+  @Singleton
+  public BlockWithItemsComponents blockWithItemsComponents() {
+    return new BlockWithItemsComponents(driver);
+  }
 }
