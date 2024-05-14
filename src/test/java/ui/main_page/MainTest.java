@@ -1,10 +1,10 @@
 import com.google.inject.Inject;
-import components.BlockWithItemsComponents;
-import extensions.UIExtensions;
+import otus.components.BlockWithItemsComponents;
+import otus.extensions.UIExtensions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pages.CoursesPage;
-import pages.MainPage;
+import otus.pages.CoursesPage;
+import otus.pages.MainPage;
 
 @ExtendWith(UIExtensions.class)
 public class MainTest {

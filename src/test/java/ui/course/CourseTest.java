@@ -1,10 +1,10 @@
 import com.google.inject.Inject;
-import extensions.UIExtensions;
+import otus.extensions.UIExtensions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import pages.CourseDetailPage;
-import pages.CoursesPage;
-import pages.MainPage;
+import otus.pages.CourseDetailPage;
+import otus.pages.CoursesPage;
+import otus.pages.MainPage;
 
 import java.io.IOException;
 
