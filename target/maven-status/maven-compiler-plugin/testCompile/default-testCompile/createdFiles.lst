@@ -1,0 +1,6 @@
+com/otus/steps/hooks/Hooks.class
+com/otus/steps/pages/CoursePageSteps.class
+com/otus/steps/components/BlockWithItemsComponentSteps.class
+com/otus/steps/pages/CourseDetailPageSteps.class
+com/otus/steps/pages/MainPageSteps.class
+com/otus/RunnerTest.class
